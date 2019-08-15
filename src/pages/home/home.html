@@ -1,14 +1,154 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
+  <ion-navbar color="major">
+    <button ion-button menuToggle>
+      <ion-icon name="menu" color="light"></ion-icon>
+    </button>
+    <ion-title> <img alt="logo" height="60" hspace="100" src="./assets/imgs/logo_skynet.png"> </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content>
+
+  <div padding style="padding-bottom: 0;">
+    <ion-input clearInput class="round" [(ngModel)]="batchNumber" placeholder="Batch Number" mode="md">
+    </ion-input>
+  </div>
+
+  <div padding>
+    <ion-segment [(ngModel)]="pickupType" color="major" mode="ios">
+      <ion-segment-button value="pickup">
+        PICK-UP
+      </ion-segment-button>
+
+      <ion-segment-button value="save" (click)="showall()">
+        SHOW ITEMS
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  <div [ngSwitch]="pickupType">
+    <div *ngSwitchCase="'pickup'">
+      <ion-list>
+        <ion-item>
+          <ion-label>Shipment Type </ion-label>
+          <ion-select interface="action-sheet" [(ngModel)]="shipmentType">
+            <ion-option value="document">Document</ion-option>
+            <ion-option value="parcel">Parcel</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>AWB Number</ion-label>
+          <ion-input clearInput [(ngModel)]="awbNumber" type="number"></ion-input>
+          <button ion-button color="major" small (click)="scanBarcode()" item-end> Scan</button>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Destination Code</ion-label>
+          <ion-input [(ngModel)]="destCode" type=""></ion-input>
+        </ion-item>
+        <ion-item>
+
+          <ion-label floating>Shipment Weight in Kilos</ion-label>
+          <ion-input [(ngModel)]="weight" type="number"></ion-input>
+
+        </ion-item>
+      </ion-list>
+
+
+      <div class="grid-container-4">
+        <div class="grid-item">
+          <ion-label> VWeight </ion-label>
+        </div>
+        <div class="grid-item">
+          <ion-input class="input-weight" placeholder="length(cm)" [(ngModel)]="volumetricWeight.length" type="number">
+          </ion-input>
+        </div>
+
+        <div class="grid-item">
+          <ion-input class="input-weight" placeholder="width(cm)" [(ngModel)]="volumetricWeight.height" type="number">
+          </ion-input>
+        </div>
+
+        <div class="grid-item">
+          <ion-input class="input-weight" placeholder="height(cm)" [(ngModel)]="volumetricWeight.width" type="number">
+          </ion-input>
+        </div>
+      </div>
+
+      <div class="btnsHolder" padding>
+        <button ion-button block (click)="save()"> Save</button>
+      </div>
+    </div>
+    <div *ngSwitchCase="'save'">
+      <ion-list>
+        <h5 padding-left>Total Count : {{ details?.length || 0}}</h5>
+        <h5 padding-left>Total Weight Of Batch: {{totalWeightAll}} KG</h5>
+        <h5 padding-left>Batch Number : {{batchNumberToShow}}</h5>
+        <ion-item *ngFor="let d of details;">
+          <ion-card class="bg-style">
+            <ion-card-header>
+
+            </ion-card-header>
+            <ion-list class="padding-left-style">
+
+              <!-- to Add the Total awbnumbers on a specific batch-->
+
+              <h3 class="line-height-style">AWBNumber: {{d.awbNumber}}</h3>
+              <h3 class="line-height-style">Shipment Type: {{d.shipmentType}}</h3>
+
+              <h3 class="line-height-style">Destination Code: {{d.destCode}}</h3>
+              <h3 class="line-height-style">shipment weight: {{d.weight}} KG</h3>
+
+              <!-- total weight should be the greatest of the two weight entered ie
+              weight or volumetric weight -->
+              <h3 class="line-height-style">Volumetric Weight: {{d.totalWeight}} KG</h3>
+              <!-- The sum all the weights TotalSumWeights to be displayed here-->
+            </ion-list>
+          </ion-card>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+
+  <!-- 
+  <div [ngSwitch]="pickupType">
+    <div *ngSwitchCase="'pickup'">
+
+
+
+
+
+
+      <div class="grid-container-4">
+        <div class="grid-item">
+          <ion-label> VWeight </ion-label>
+        </div>
+
+
+
+        <div class="grid-item">
+          <ion-input class="input-weight" placeholder="length" [(ngModel)]="weight.length" type="number"></ion-input>
+        </div>
+
+        <div class="grid-item">
+          <ion-input class="input-weight" placeholder="width" [(ngModel)]="weight.height" type="number"></ion-input>
+        </div>
+
+        <div class="grid-item">
+          <ion-input class="input-weight" placeholder="height" [(ngModel)]="weight.width" type="number"></ion-input>
+        </div>
+      </div>
+
+    </div>
+    <div *ngSwitchCase="'save'">
+      <ion-list >
+  
+  
+      </ion-list>
+    </div>
+
+  </div>
+ -->
+
+
+
 </ion-content>
